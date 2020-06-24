@@ -11,10 +11,8 @@ import java.io.OutputStreamWriter;
 @SpringBootApplication
 public class EmpresaConsumerCsvApplication {
 
-	public static BufferedWriter bw;
-
 	public static void main(String[] args) throws IOException {
-		bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("empresas.csv"), "UTF-8"));
+
 		SpringApplication.run(EmpresaConsumerCsvApplication.class, args);
 	}
 
