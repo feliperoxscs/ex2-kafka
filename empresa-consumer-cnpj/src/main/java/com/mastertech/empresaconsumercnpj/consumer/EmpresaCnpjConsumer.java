@@ -16,9 +16,12 @@ public class EmpresaCnpjConsumer {
     @Autowired
     private EmpresaCnpjCsvProducer empresaCnpjCsvProducer;
 
+    @Autowired
+    private CnpjHelper cnpjHelper;
+
     @KafkaListener(topics = "spec2-felipe-sarmento-2", groupId = "snoopy")
     public void recebeMensagem(@Payload  Empresa empresa) throws IOException {
-        if (CnpjHelper.verificaCapital(empresa.getCnpj())) {
+        if (cnpjHelper.verificaCapital(empresa.getCnpj())) {
             empresaCnpjCsvProducer.enviaKafka(empresa);
         } else {
             throw new RuntimeException("Capital menor que 1Mi!");
