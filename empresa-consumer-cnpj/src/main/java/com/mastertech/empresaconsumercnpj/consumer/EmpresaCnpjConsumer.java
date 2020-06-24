@@ -1,7 +1,7 @@
 package com.mastertech.empresaconsumercnpj.consumer;
 
 import com.mastertech.empresaProducer.dto.Empresa;
-import com.mastertech.empresaconsumercnpj.helper.CnpjHelper;
+import com.mastertech.empresaconsumercnpj.service.CnpjService;
 import com.mastertech.empresaconsumercnpj.producer.EmpresaCnpjCsvProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -17,11 +17,11 @@ public class EmpresaCnpjConsumer {
     private EmpresaCnpjCsvProducer empresaCnpjCsvProducer;
 
     @Autowired
-    private CnpjHelper cnpjHelper;
+    private CnpjService cnpjService;
 
     @KafkaListener(topics = "spec2-felipe-sarmento-2", groupId = "snoopy")
     public void recebeMensagem(@Payload  Empresa empresa) throws IOException {
-        if (cnpjHelper.verificaCapital(empresa.getCnpj())) {
+        if (cnpjService.verificaCapital(empresa.getCnpj())) {
             empresaCnpjCsvProducer.enviaKafka(empresa);
         } else {
             throw new RuntimeException("Capital menor que 1Mi!");
